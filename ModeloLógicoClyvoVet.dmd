@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="ModeloLógicoClyvoVet" id="59F3A6BC-33F0-E57A-C4EB-013B33E28985" version="3.5">
+<createdBy>user</createdBy>
+<createdTime>2026-05-18 00:50:11 UTC</createdTime>
+<ownerDesignName>ModeloLógicoClyvoVet</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>59F3A6BC-33F0-E57A-C4EB-013B33E28985</designId>
+<usedDesignStorageDescriptors>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="DEEC9C08-58EA-0F00-458A-0B933B129DF7">
+<designStoragePath>C:\ClyvoVet</designStoragePath>
+</designDescr>
+</usedDesignStorageDescriptors>
+</OSDM_Design>
