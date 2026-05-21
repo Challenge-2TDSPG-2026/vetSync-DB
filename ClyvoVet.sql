@@ -129,7 +129,7 @@ CREATE TABLE TB_PRESCRICAO (
 );
 
 
---  2. PROCEDURES (CORRIGIDAS)
+--  2. PROCEDURES
 
 CREATE OR REPLACE PROCEDURE prc_inserir_tutor (
     p_nm_tutor    IN TB_TUTOR.nm_tutor%TYPE,
@@ -571,7 +571,7 @@ BEGIN
     prc_inserir_pet('Luna',   DATE '2022-06-05', 'F',  7.8, 4, 4);
     prc_inserir_pet('Thor',   DATE '2018-11-30', 'M', 32.0, 5, 2);
     prc_inserir_pet('Bella',  DATE '2023-02-14', 'F',  3.1, 1, 7);
-    prc_inserir_pet('Pipoca', DATE '2022-09-01', 'F',  0.3, 6, 10);
+    prc_inserir_pet('Paçoca', DATE '2022-09-01', 'F',  0.3, 6, 10);
     prc_inserir_pet('Piu',    DATE '2021-04-22', 'M',  0.1, 3,  9);
 END;
 /
@@ -644,7 +644,7 @@ END;
 --  4. RELATORIOS / CONSULTAS
 -- Relatorio 1: Eventos por categoria e tipo
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('=== EVENTOS POR CATEGORIA E TIPO ===');
+    DBMS_OUTPUT.PUT_LINE('EVENTOS POR CATEGORIA E TIPO');
     FOR r IN (
         SELECT te.ds_categoria, te.nm_tipo_evento, COUNT(es.id_evento) AS total
           FROM TB_TIPO_EVENTO te
@@ -663,7 +663,7 @@ END;
 
 -- Relatorio 2: Gastos por tutor e pet
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('=== GASTOS POR TUTOR E PET ===');
+    DBMS_OUTPUT.PUT_LINE('GASTOS POR TUTOR E PET');
     FOR r IN (
         SELECT t.nm_tutor, p.nm_pet, COUNT(es.id_evento) AS qt, SUM(es.vl_custo) AS total
           FROM TB_TUTOR t
@@ -684,7 +684,7 @@ END;
 
 -- Relatorio 3: Atendimentos por clinica e veterinario
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('=== ATENDIMENTOS POR CLINICA E VETERINARIO ===');
+    DBMS_OUTPUT.PUT_LINE('ATENDIMENTOS POR CLINICA E VETERINARIO');
     FOR r IN (
         SELECT c.nm_clinica, v.nm_veterinario, COUNT(es.id_evento) AS atend
           FROM TB_CLINICA c
@@ -739,7 +739,7 @@ DECLARE
     v_tot   NUMBER := 0;
     v_qt    NUMBER := 0;
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('=== CLASSIFICACAO DE PORTE DOS PETS ===');
+    DBMS_OUTPUT.PUT_LINE('CLASSIFICACAO DE PORTE DOS PETS');
     DBMS_OUTPUT.PUT_LINE(RPAD('PET',12)||RPAD('ESPECIE',8)||RPAD('RACA',18)||RPAD('TUTOR',20)||'PESO  CLASS.');
     FOR r IN c LOOP
         v_class := CASE
@@ -783,7 +783,7 @@ DECLARE
     v_fc    VARCHAR2(12);
 BEGIN
     SELECT AVG(vl_custo) INTO v_media FROM TB_EVENTO_SAUDE;
-    DBMS_OUTPUT.PUT_LINE('=== EVENTOS COM STATUS DE CUSTO E PRESCRICAO ===');
+    DBMS_OUTPUT.PUT_LINE('EVENTOS COM STATUS DE CUSTO E PRESCRICAO');
     DBMS_OUTPUT.PUT_LINE(RPAD('PET',9)||RPAD('TIPO',22)||RPAD('DATA',12)||LPAD('CUSTO',9)||' PRESCRICAO     STATUS');
     FOR r IN c LOOP
         v_fp := CASE WHEN r.qt_presc > 0 THEN 'Com prescricao' ELSE 'Sem prescricao' END;
@@ -826,7 +826,7 @@ DECLARE
     v_sub   NUMBER := 0;  v_geral NUMBER := 0;
     v_qsub  NUMBER := 0;  v_qtot  NUMBER := 0;
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('=== RESUMO FINANCEIRO POR CLINICA ===');
+    DBMS_OUTPUT.PUT_LINE('RESUMO FINANCEIRO POR CLINICA');
     FOR r IN c LOOP
         IF r.nm_clinica <> v_ult THEN
             IF v_ult <> '###' THEN
