@@ -1,0 +1,77 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="DE703FA4-847D-357A-376B-E54AF6C456D5" name="TB_RACA">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>26AE3F55-9760-0744-1580-EEA00D632703</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_raca" id="9BC77433-DD5B-BA88-6CD2-FD423A83851C">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>418A65B9-756B-8BAC-946D-205DAB62C6D7</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>5</dataTypePrecision>
+<ownDataTypeParameters>,5,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nm_raca" id="B8341F45-7AD4-3971-E18A-490C1FCAB0FB">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>7D9C9D09-4C56-BFE0-9BB4-BC199247479D</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>80</dataTypeSize>
+<ownDataTypeParameters>80,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="id_especie" id="8A73980A-DC5B-A5A6-27A5-D03880EBC79B">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>A8C25554-D84D-036D-B149-1ABF95247E23</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>5</dataTypePrecision>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="1B51408F-8821-FA2D-66F8-3995CA185DFA" referredColumn="AFC8F098-79AC-C1F5-6BD6-99C8B32E32AD"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="4CC2AC80-0CED-1706-686A-A8DB560E8C78" name="TB_RACA_PK">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>EF41CA89-977D-9D38-A470-5FAA23BD0566</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9BC77433-DD5B-BA88-6CD2-FD423A83851C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0E557A93-4299-1601-545A-5FBF4E7E4715" name="TB_RACA_TB_ESPECIE_FK">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>1DF24C23-5E77-9CFF-6B07-2D4D926FD163</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8A73980A-DC5B-A5A6-27A5-D03880EBC79B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

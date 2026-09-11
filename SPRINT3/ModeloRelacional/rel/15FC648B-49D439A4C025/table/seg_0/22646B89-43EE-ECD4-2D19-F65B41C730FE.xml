@@ -1,0 +1,87 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="22646B89-43EE-ECD4-2D19-F65B41C730FE" name="TB_RELATORIO_CUSTOS_CLINICA">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>790F5707-D1DA-6A2F-11B2-0C38190377A9</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_linha" id="A6A2D300-6521-A13E-294E-967AE505CFED">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>3C54004D-8FD3-E826-CA2F-22DBC1948224</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>5</dataTypePrecision>
+<ownDataTypeParameters>,5,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nm_clinica" id="432FFFD9-A949-A7EE-E9DA-49029A58DD8A">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>13E2DA5A-241F-B4E5-BF71-CB59285BC62B</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>150</dataTypeSize>
+<ownDataTypeParameters>150,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nm_tipo_evento" id="752AFB4B-A20B-FECD-18B4-52E6CA55C293">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>E72C7276-FB89-1914-A138-BFBD6C87B98C</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>80</dataTypeSize>
+<ownDataTypeParameters>80,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="vl_total" id="67E7E0C5-6E8D-7827-15A0-A99B8963390D">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>A978D0A2-5899-CC8A-1603-FDA7A33C282E</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>12</dataTypePrecision>
+<dataTypeScale>2</dataTypeScale>
+<ownDataTypeParameters>,12,2</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ds_tipo_linha" id="CE171E99-A4D9-30B4-6845-B20632DD8400">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>BDB1E300-ED01-5865-8EC4-485C14481B7E</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="453C0737-1955-6532-BE6F-CCD87320918B" name="TB_RELATORIO_CUSTOS_CLINICA_PK">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:16:46 UTC</createdTime>
+<generatorID>573FE876-C28A-08F9-9A17-ED6D993F2ED8</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A6A2D300-6521-A13E-294E-967AE505CFED"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,74 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="26AE3F55-9760-0744-1580-EEA00D632703" name="TB_RACA">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:22:31 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_raca" id="418A65B9-756B-8BAC-946D-205DAB62C6D7">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:22:37 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>5</dataTypePrecision>
+<ownDataTypeParameters>,5,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nm_raca" id="7D9C9D09-4C56-BFE0-9BB4-BC199247479D">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:24:03 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>80</dataTypeSize>
+<ownDataTypeParameters>80,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_especie" id="A8C25554-D84D-036D-B149-1ABF95247E23">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:09:56 UTC</createdTime>
+<generatorID>1DF24C23-5E77-9CFF-6B07-2D4D926FD163</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<referedAttribute>E4990DEC-406B-3C88-0B90-5B466BD46A61</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>5</dataTypePrecision>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="EF41CA89-977D-9D38-A470-5FAA23BD0566" name="TB_RACA PK">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:23:54 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>418A65B9-756B-8BAC-946D-205DAB62C6D7</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

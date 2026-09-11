@@ -1,0 +1,113 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="21C357B0-897A-4D84-43A9-4B13D9291A88" name="TB_VETERINARIO">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:28:56 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_veterinario" id="2D5605F0-4122-D770-C9FF-9164FFD4C240">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:29:03 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,10,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nm_veterinario" id="5999CB55-340F-F47A-AADF-6A3B9A2F3C98">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:29:15 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nr_crmv" id="62847B95-4B89-F524-1FE5-F7A061896B18">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:29:32 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ds_email" id="746B2316-82B1-C0C4-D96D-5F4C0AD5327A">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:29:46 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>150</dataTypeSize>
+<ownDataTypeParameters>150,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ds_senha" id="0EA5F148-03F6-28DE-A012-28A1642493C7">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:29:55 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>225</dataTypeSize>
+<ownDataTypeParameters>225,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_clinica" id="BB0546FA-A121-4D92-7689-1550D06F3248">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 03:12:25 UTC</createdTime>
+<generatorID>0DCC3779-9068-DF09-B703-A1681616FA36</generatorID>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<referedAttribute>BEFA7643-CD90-FC8B-8B59-BF232424B65D</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="573F105D-32C5-B4DC-9D81-2C9844E576DB" name="TB_VETERINARIO PK">
+<createdBy>user</createdBy>
+<createdTime>2026-09-11 01:29:14 UTC</createdTime>
+<ownerDesignName>ModeloRelacional</ownerDesignName>
+<engineerTo>
+<item key="15FC648B-B5A5-3D9C-E619-49D439A4C025" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>2D5605F0-4122-D770-C9FF-9164FFD4C240</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
