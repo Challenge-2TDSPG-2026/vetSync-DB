@@ -2,8 +2,8 @@
 -- Sprint 3 - Script de entrega consolidado
 --
 -- Equipe: Arthur Brito da Silva (RM562085)
--- Pedro Henrique Brum Lopes (RM561780)
 -- Luiz Felipe Flosi dos Santos (RM563197)
+-- Pedro Henrique Brum Lopes (RM561780)
 
 -- Este script e AUTOCONTIDO: cria do zero todas as tabelas usadas pelos
 -- objetos desta sprint (apenas as tabelas realmente referenciadas pelas 2
@@ -217,15 +217,19 @@ INSERT INTO TB_PET (nm_pet, dt_nascimento, ds_sexo, nr_peso_kg, id_tutor, id_rac
            (SELECT id_tutor FROM TB_TUTOR WHERE ds_email = 'carlos.mendes@email.com'),
            (SELECT id_raca FROM TB_RACA WHERE nm_raca = 'Persa') FROM dual;
 
--- 3 CLINICAS
+-- 5 CLINICAS
 INSERT INTO TB_CLINICA (nm_clinica, ds_cnpj, ds_cidade, ds_uf) VALUES
     ('Clyvo Vet', '12345678000199', 'Sao Paulo', 'SP');
 INSERT INTO TB_CLINICA (nm_clinica, ds_cnpj, ds_cidade, ds_uf) VALUES
     ('VetCare Centro Sprint3', '30303030000199', 'Sao Paulo', 'SP');
 INSERT INTO TB_CLINICA (nm_clinica, ds_cnpj, ds_cidade, ds_uf) VALUES
     ('AnimalLife Sul Sprint3', '40404040000188', 'Curitiba', 'PR');
+INSERT INTO TB_CLINICA (nm_clinica, ds_cnpj, ds_cidade, ds_uf) VALUES
+    ('Pet Amigo Norte Sprint3', '50505050000177', 'Belo Horizonte', 'MG');
+INSERT INTO TB_CLINICA (nm_clinica, ds_cnpj, ds_cidade, ds_uf) VALUES
+    ('Bicho Sao Sprint3', '60606060000166', 'Porto Alegre', 'RS');
 
--- 3 VETERINARIOS (um por clinica)
+-- 5 VETERINARIOS (um por clinica)
 INSERT INTO TB_VETERINARIO (nm_veterinario, nr_crmv, ds_email, ds_senha, id_clinica)
     SELECT 'Dra. Ana Costa', 'SP-12345', 'ana.vet@clyvovet.com', 'SENHA_HASH_VET1',
            (SELECT id_clinica FROM TB_CLINICA WHERE nm_clinica = 'Clyvo Vet') FROM dual;
@@ -235,14 +239,24 @@ INSERT INTO TB_VETERINARIO (nm_veterinario, nr_crmv, ds_email, ds_senha, id_clin
 INSERT INTO TB_VETERINARIO (nm_veterinario, nr_crmv, ds_email, ds_senha, id_clinica)
     SELECT 'Dra. Fernanda Rocha', 'PR-90002', 'fernanda.rocha@clyvovet.com', 'SENHA_HASH_VET3',
            (SELECT id_clinica FROM TB_CLINICA WHERE nm_clinica = 'AnimalLife Sul Sprint3') FROM dual;
+INSERT INTO TB_VETERINARIO (nm_veterinario, nr_crmv, ds_email, ds_senha, id_clinica)
+    SELECT 'Dr. Rodrigo Nunes', 'MG-90003', 'rodrigo.nunes@clyvovet.com', 'SENHA_HASH_VET4',
+           (SELECT id_clinica FROM TB_CLINICA WHERE nm_clinica = 'Pet Amigo Norte Sprint3') FROM dual;
+INSERT INTO TB_VETERINARIO (nm_veterinario, nr_crmv, ds_email, ds_senha, id_clinica)
+    SELECT 'Dra. Camila Duarte', 'RS-90004', 'camila.duarte@clyvovet.com', 'SENHA_HASH_VET5',
+           (SELECT id_clinica FROM TB_CLINICA WHERE nm_clinica = 'Bicho Sao Sprint3') FROM dual;
 
--- 3 TIPOS DE EVENTO
+-- 5 TIPOS DE EVENTO
 INSERT INTO TB_TIPO_EVENTO (nm_tipo_evento, ds_categoria, nr_pontos) VALUES
     ('Vacina', 'PREVENTIVO', 20);
 INSERT INTO TB_TIPO_EVENTO (nm_tipo_evento, ds_categoria, nr_pontos) VALUES
     ('Consulta de rotina', 'PREVENTIVO', 15);
 INSERT INTO TB_TIPO_EVENTO (nm_tipo_evento, ds_categoria, nr_pontos) VALUES
     ('Banho e tosa', 'BEM_ESTAR', 5);
+INSERT INTO TB_TIPO_EVENTO (nm_tipo_evento, ds_categoria, nr_pontos) VALUES
+    ('Cirurgia', 'TERAPEUTICO', 40);
+INSERT INTO TB_TIPO_EVENTO (nm_tipo_evento, ds_categoria, nr_pontos) VALUES
+    ('Atendimento de emergencia', 'EMERGENCIA', 30);
 
 -- 9 EVENTOS DE SAUDE (3 clinicas x 3 tipos, para o Procedimento 2 mostrar
 -- subtotal por clinica em um cenario com mais de uma clinica)
@@ -546,6 +560,9 @@ CREATE OR REPLACE PROCEDURE prc_resumo_custos_clinica_tipo (
 BEGIN
     DELETE FROM TB_RELATORIO_CUSTOS_CLINICA;
 
+    DBMS_OUTPUT.PUT_LINE(RPAD('Clinica', 28) || RPAD('Tipo Evento', 26) || LPAD('Valor', 12));
+    DBMS_OUTPUT.PUT_LINE(RPAD('-', 28, '-') || RPAD('-', 26, '-') || LPAD('-', 12, '-'));
+
     SELECT COUNT(*) INTO v_total_linhas
     FROM TB_EVENTO_SAUDE es
     JOIN TB_VETERINARIO v ON es.id_veterinario = v.id_veterinario
@@ -569,10 +586,12 @@ BEGIN
             IF v_tipo_atual IS NOT NULL THEN
                 INSERT INTO TB_RELATORIO_CUSTOS_CLINICA (nm_clinica, nm_tipo_evento, vl_total, ds_tipo_linha)
                 VALUES (v_clinica_atual, v_tipo_atual, v_soma_tipo, 'DETALHE');
+                DBMS_OUTPUT.PUT_LINE(RPAD(v_clinica_atual, 28) || RPAD(v_tipo_atual, 26) || LPAD(TO_CHAR(v_soma_tipo, 'FM999999990.00'), 12));
             END IF;
             IF v_clinica_atual IS NOT NULL THEN
                 INSERT INTO TB_RELATORIO_CUSTOS_CLINICA (nm_clinica, nm_tipo_evento, vl_total, ds_tipo_linha)
                 VALUES (v_clinica_atual, NULL, v_subtotal_clinica, 'SUBTOTAL');
+                DBMS_OUTPUT.PUT_LINE(RPAD('Sub Total ' || v_clinica_atual, 54) || LPAD(TO_CHAR(v_subtotal_clinica, 'FM999999990.00'), 12));
             END IF;
 
             v_clinica_atual    := r_custo.nm_clinica;
@@ -583,6 +602,7 @@ BEGIN
         ELSIF r_custo.nm_tipo_evento <> v_tipo_atual THEN
             INSERT INTO TB_RELATORIO_CUSTOS_CLINICA (nm_clinica, nm_tipo_evento, vl_total, ds_tipo_linha)
             VALUES (v_clinica_atual, v_tipo_atual, v_soma_tipo, 'DETALHE');
+            DBMS_OUTPUT.PUT_LINE(RPAD(v_clinica_atual, 28) || RPAD(v_tipo_atual, 26) || LPAD(TO_CHAR(v_soma_tipo, 'FM999999990.00'), 12));
 
             v_tipo_atual := r_custo.nm_tipo_evento;
             v_soma_tipo  := 0;
@@ -597,18 +617,21 @@ BEGIN
     IF v_tipo_atual IS NOT NULL THEN
         INSERT INTO TB_RELATORIO_CUSTOS_CLINICA (nm_clinica, nm_tipo_evento, vl_total, ds_tipo_linha)
         VALUES (v_clinica_atual, v_tipo_atual, v_soma_tipo, 'DETALHE');
+        DBMS_OUTPUT.PUT_LINE(RPAD(v_clinica_atual, 28) || RPAD(v_tipo_atual, 26) || LPAD(TO_CHAR(v_soma_tipo, 'FM999999990.00'), 12));
     END IF;
     IF v_clinica_atual IS NOT NULL THEN
         INSERT INTO TB_RELATORIO_CUSTOS_CLINICA (nm_clinica, nm_tipo_evento, vl_total, ds_tipo_linha)
         VALUES (v_clinica_atual, NULL, v_subtotal_clinica, 'SUBTOTAL');
+        DBMS_OUTPUT.PUT_LINE(RPAD('Sub Total ' || v_clinica_atual, 54) || LPAD(TO_CHAR(v_subtotal_clinica, 'FM999999990.00'), 12));
     END IF;
 
     INSERT INTO TB_RELATORIO_CUSTOS_CLINICA (nm_clinica, nm_tipo_evento, vl_total, ds_tipo_linha)
     VALUES (NULL, NULL, v_total_geral, 'TOTAL');
 
-    COMMIT;
+    DBMS_OUTPUT.PUT_LINE(RPAD('-', 28, '-') || RPAD('-', 26, '-') || LPAD('-', 12, '-'));
+    DBMS_OUTPUT.PUT_LINE(RPAD('Total Geral', 54) || LPAD(TO_CHAR(v_total_geral, 'FM999999990.00'), 12));
 
-    DBMS_OUTPUT.PUT_LINE('Resumo de custos gerado com sucesso. Total geral: ' || v_total_geral);
+    COMMIT;
 
 EXCEPTION
     WHEN e_sem_dados THEN
@@ -676,3 +699,103 @@ BEGIN
 
 END trg_auditoria_evento_saude;
 /
+
+
+-- 9. BLOCO DE TESTES / EVIDENCIAS (para os prints exigidos no PDF de entrega)
+-- Execute cada bloco separadamente no SQL Developer e tire o print do resultado.
+
+-- 9.1 FUNCAO 1 + PROCEDIMENTO 1 - caso de sucesso (JSON de todos os pets)
+/*
+SET SERVEROUTPUT ON;
+DECLARE
+    v_json CLOB;
+BEGIN
+    prc_listar_pets_tutores_json(v_json);
+    DBMS_OUTPUT.PUT_LINE(v_json);
+END;
+/
+*/
+
+-- 9.2 PROCEDIMENTO 1 - caso de excecao tratada (tutor sem pets cadastrados)
+/*
+SET SERVEROUTPUT ON;
+DECLARE
+    v_json      CLOB;
+    v_id_tutor  TB_TUTOR.id_tutor%TYPE;
+BEGIN
+    INSERT INTO TB_TUTOR (nm_tutor, ds_email, nr_telefone, ds_cpf, ds_senha)
+    VALUES ('Tutor Sem Pet', 'sem.pet@email.com', '11900000000', '99999999999', 'SENHA_HASH_X')
+    RETURNING id_tutor INTO v_id_tutor;
+    COMMIT;
+    prc_listar_pets_tutores_json(v_json, v_id_tutor);
+END;
+/
+*/
+
+-- 9.3 FUNCAO 2 - caso de sucesso (calculo de idade)
+/*
+SET SERVEROUTPUT ON;
+DECLARE
+    v_idade NUMBER;
+BEGIN
+    v_idade := fnc_calcular_idade(DATE '2022-09-02');
+    DBMS_OUTPUT.PUT_LINE('Idade calculada: ' || v_idade || ' ano(s).');
+END;
+/
+*/
+
+-- 9.4 FUNCAO 2 - caso de excecao tratada (data de nascimento futura)
+/*
+SET SERVEROUTPUT ON;
+DECLARE
+    v_idade NUMBER;
+BEGIN
+    v_idade := fnc_calcular_idade(SYSDATE + 10);
+END;
+/
+*/
+
+-- 9.5 PROCEDIMENTO 2 - caso de sucesso (resumo formatado no console)
+/*
+SET SERVEROUTPUT ON;
+EXEC prc_resumo_custos_clinica_tipo;
+SELECT * FROM TB_RELATORIO_CUSTOS_CLINICA ORDER BY id_linha;
+*/
+
+-- 9.6 PROCEDIMENTO 2 - caso de excecao tratada (clinica sem eventos)
+/*
+SET SERVEROUTPUT ON;
+DECLARE
+    v_id_clinica_vazia TB_CLINICA.id_clinica%TYPE;
+BEGIN
+    INSERT INTO TB_CLINICA (nm_clinica, ds_cnpj, ds_cidade, ds_uf)
+    VALUES ('Clinica Sem Eventos', '70707070000155', 'Recife', 'PE')
+    RETURNING id_clinica INTO v_id_clinica_vazia;
+    COMMIT;
+    prc_resumo_custos_clinica_tipo(v_id_clinica_vazia);
+END;
+/
+*/
+
+-- 9.7 TRIGGER - INSERT / UPDATE / DELETE em TB_EVENTO_SAUDE + auditoria
+/*
+DECLARE
+    v_id_evento_teste TB_EVENTO_SAUDE.id_evento%TYPE;
+BEGIN
+    INSERT INTO TB_EVENTO_SAUDE (id_pet, id_tipo_evento, id_veterinario, dt_evento, ds_observacao, vl_custo, ds_status)
+        SELECT (SELECT id_pet FROM TB_PET WHERE nm_pet = 'Buddy'),
+               (SELECT id_tipo_evento FROM TB_TIPO_EVENTO WHERE nm_tipo_evento = 'Cirurgia'),
+               (SELECT id_veterinario FROM TB_VETERINARIO WHERE ds_email = 'ana.vet@clyvovet.com'),
+               SYSDATE, 'Evento de teste do trigger', 500, 'AGENDADO' FROM dual
+        RETURNING id_evento INTO v_id_evento_teste;
+
+    UPDATE TB_EVENTO_SAUDE SET ds_status = 'CONCLUIDO', vl_custo = 550 WHERE id_evento = v_id_evento_teste;
+
+    DELETE FROM TB_EVENTO_SAUDE WHERE id_evento = v_id_evento_teste;
+
+    COMMIT;
+END;
+/
+
+SELECT * FROM TB_AUDITORIA ORDER BY id_auditoria DESC;
+*/
