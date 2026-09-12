@@ -14,11 +14,11 @@ O **ClyvoVet** é um banco de dados relacional voltado para clínicas veterinár
 
 ```
 vetSync-DB/
-├── 2TDS_2026_CodigoSql_Integrantes.sql   # Script principal (CREATE TABLE + INSERT + objetos PL/SQL)
+├── 2TDSPG_2026_CodigoSql_Integrantes.sql  # Script principal (CREATE TABLE + INSERT + objetos PL/SQL)
 ├── ModeloLogico.dmd                       # Modelo lógico (Oracle Data Modeler)
 ├── ModeloRelacional.dmd                   # Modelo relacional (Oracle Data Modeler)
 ├── ModeloRelacional.zip                   # Pasta de suporte do projeto Data Modeler (serve os dois dmd)
-├── 2TDSX_2026_Proj_BD.pdf                 # Documentação da Sprint 3
+├── 2TDSPG_2026_Proj_BD.pdf                # Documentação da Sprint 3 (capa, prints de execução e exceções)
 └── README.md
 ```
 
@@ -60,7 +60,7 @@ Todas as functions e procedures tratam no mínimo 3 exceções distintas, com lo
 ## ▶️ Como Executar
 
 1. Abra o **Oracle SQL Developer** conectado a um banco Oracle.
-2. Execute o script `2TDS_2026_CodigoSql_Integrantes.sql` inteiro (é autocontido: limpa objetos anteriores, cria as tabelas do zero, popula com dados de exemplo, e cria todos os objetos PL/SQL).
+2. Execute o script `2TDSPG_2026_CodigoSql_Integrantes.sql` inteiro (é autocontido: limpa objetos anteriores, cria as tabelas do zero, popula com dados de exemplo, e cria todos os objetos PL/SQL).
 3. Ative a saída do servidor antes de testar as procedures:
    ```sql
    SET SERVEROUTPUT ON;
