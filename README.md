@@ -1,90 +1,125 @@
 # 🐾 ClyvoVet — Mastering Relational and Non-Relational Database
 
-Sistema de gerenciamento veterinário desenvolvido como projeto acadêmico para a disciplina **Mastering Relational and Non-Relational Database**, FIAP Challenge 2026.
+Banco de dados do **ClyvoVet / VetSync** (FIAP Challenge 2026): Oracle com PL/SQL **empacotado**, integração com a API Java (Spring Boot) e exportação dos dados para **MongoDB**.
 
 ---
 
 ## 📋 Descrição
 
-O **ClyvoVet** é um banco de dados relacional voltado para clínicas veterinárias, permitindo o gerenciamento de tutores, pets, veterinários, clínicas e eventos de saúde. O projeto foi desenvolvido em **Oracle SQL** com uso de procedures, funções, cursores, triggers de auditoria e controle de erros via log.
+Sistema de gerenciamento veterinário: tutores, pets, clínicas, veterinários e eventos de saúde. Na Sprint 4 as rotinas da Sprint 3 foram organizadas em **pacotes PL/SQL separados por responsabilidade**, passaram a ser **chamadas pela aplicação Java**, e o banco relacional passou a gerar um **dataset JSON** importado em um banco de **documentos (MongoDB)**.
+
+```
+Oracle (relacional) ──► pacotes PL/SQL ──► API Java (Spring) ──► JSON
+        │                                                          
+        └─ PKG_EXPORTACAO_JSON ──► dados/tutores.json ──► MongoDB (tutores + array de pets)
+```
 
 ---
 
-## 🗂️ Estrutura do Projeto
+## 🗂️ Estrutura do projeto
 
 ```
 vetSync-DB/
-├── 2TDSPG_2026_CodigoSql_Integrantes.sql  # Script principal (CREATE TABLE + INSERT + objetos PL/SQL)
-├── ModeloLogico.dmd                       # Modelo lógico (Oracle Data Modeler)
-├── ModeloRelacional.dmd                   # Modelo relacional (Oracle Data Modeler)
-├── ModeloRelacional.zip                   # Pasta de suporte do projeto Data Modeler (serve os dois dmd)
-├── 2TDSPG_2026_Proj_BD.pdf                # Documentação da Sprint 3 (capa, prints de execução e exceções)
+├── 2TDSPG_2026_CodigoSql_Integrantes.sql   # Script principal (tabelas + inserts + PACOTES + gatilho + testes)
+├── dados/
+│   └── tutores.json                      # Dataset exportado do Oracle (entrada do MongoDB)
+├── exportacao/
+│   └── exportar_json.sql                 # Gera dados/tutores.json a partir do Oracle (SQLcl/SQL*Plus)
+├── mongo/
+│   ├── 01_criar_colecao.js               # Coleção, validador de schema e índices
+│   ├── 02_importar.ps1                   # mongoimport do tutores.json
+│   └── 03_consultas.js                   # Consultas de demonstração
+├── java/                                 # Classes a copiar para a API Java (chamam os pacotes)
+├── docs/ROTEIRO_VIDEO.md                 # Roteiro da demonstração em vídeo
+├── 2TDSPG_2026_Proj_BD.pdf               # Documentação (evidências)
+├── ModeloLogico.dmd / ModeloRelacional.dmd / ModeloRelacional.zip   # Data Modeler
 └── README.md
 ```
 
 ---
 
-## 🗃️ Entidades
+## 🗃️ Entidades (Oracle)
 
 | Tabela | Descrição |
 |---|---|
-| `TB_TUTOR` | Donos dos pets (CPF, e-mail, telefone) |
-| `TB_ESPECIE` | Espécies animais |
-| `TB_RACA` | Raças vinculadas a espécies |
+| `TB_TUTOR` | Donos dos pets |
+| `TB_ESPECIE` / `TB_RACA` | Espécies e raças |
 | `TB_PET` | Animais cadastrados |
-| `TB_CLINICA` | Clínicas veterinárias |
-| `TB_VETERINARIO` | Veterinários vinculados às clínicas |
-| `TB_TIPO_EVENTO` | Categorias de eventos de saúde |
-| `TB_EVENTO_SAUDE` | Consultas, exames e procedimentos |
-| `TB_LOG_ERROS` | Log automático de erros de procedures/functions |
+| `TB_CLINICA` / `TB_VETERINARIO` | Clínicas e veterinários |
+| `TB_TIPO_EVENTO` / `TB_EVENTO_SAUDE` | Tipos de evento e eventos de saúde |
+| `TB_LOG_ERROS` | Log de erros das rotinas |
 | `TB_AUDITORIA` | Auditoria de INSERT/UPDATE/DELETE em `TB_EVENTO_SAUDE` |
-| `TB_RELATORIO_CUSTOS_CLINICA` | Tabela de apoio com o resultado do relatório de subtotais manuais |
+| `TB_RELATORIO_CUSTOS_CLINICA` | Resultado do relatório de subtotais |
 
 ---
 
-## ⚙️ Objetos PL/SQL — Sprint 3
+## 📦 Pacotes PL/SQL
 
-| Objeto | Tipo | Descrição |
-|---|---|---|
-| `FNC_MONTAR_JSON_PET` | Função | Converte dados de pet (já unidos via JOIN) em string JSON, montada manualmente, sem funções nativas do Oracle |
-| `PRC_LISTAR_PETS_TUTORES_JSON` | Procedimento | JOIN entre `TB_PET`, `TB_TUTOR`, `TB_RACA` e `TB_ESPECIE`, retornando um array JSON com todos os pets (ou filtrado por tutor) |
-| `FNC_CALCULAR_IDADE` | Função | Calcula idade em anos completos a partir da data de nascimento, substituindo a regra hoje presente no Java (`PetService.calcularIdade`) |
-| `PRC_RESUMO_CUSTOS_CLINICA_TIPO` | Procedimento | Subtotais manuais (Clínica × Tipo de Evento) sobre `TB_EVENTO_SAUDE`, sem `ROLLUP`/`CUBE`/`GROUPING SETS` |
-| `TRG_AUDITORIA_EVENTO_SAUDE` | Trigger | Registra em `TB_AUDITORIA` toda operação de INSERT/UPDATE/DELETE em `TB_EVENTO_SAUDE`, com usuário, operação, data/hora e valores antigos/novos |
-| `PRC_LOG_ERRO` | Procedimento utilitário | Centraliza o log de erros em `TB_LOG_ERROS` usando transação autônoma, isolando o log da transação de quem chamou |
+| Pacote | Conteúdo |
+|---|---|
+| `PKG_LOG_ERRO` | `PRC_REGISTRAR` — log com transação autônoma |
+| `PKG_JSON_PET` | `FNC_ESCAPAR`, **Função 1** `FNC_MONTAR_JSON_PET` (JSON manual), **Procedimento 1** `PRC_LISTAR_PETS_TUTORES_JSON` (JOIN + JSON) |
+| `PKG_PET` | **Função 2** `FNC_CALCULAR_IDADE` |
+| `PKG_RELATORIO_CUSTOS` | **Procedimento 2** `PRC_RESUMO_CUSTOS_CLINICA_TIPO` (subtotais manuais, sem ROLLUP/CUBE) |
+| `PKG_AUDITORIA_EVENTO` | `FNC_DESCREVER_EVENTO`, `PRC_REGISTRAR` — usados pelo gatilho |
+| `PKG_EXPORTACAO_JSON` | `FNC_GERAR_JSON_TUTORES`, `PRC_EXPORTAR_TUTORES_JSON` — tutores com array de pets |
 
-Todas as functions e procedures tratam no mínimo 3 exceções distintas, com log automático em `TB_LOG_ERROS`.
-
----
-
-## ▶️ Como Executar
-
-1. Abra o **Oracle SQL Developer** conectado a um banco Oracle.
-2. Execute o script `2TDSPG_2026_CodigoSql_Integrantes.sql` inteiro (é autocontido: limpa objetos anteriores, cria as tabelas do zero, popula com dados de exemplo, e cria todos os objetos PL/SQL).
-3. Ative a saída do servidor antes de testar as procedures:
-   ```sql
-   SET SERVEROUTPUT ON;
-   ```
-4. Exemplos de uso:
-   ```sql
-   -- Procedimento 1: JSON de todos os pets
-   DECLARE
-       v_json CLOB;
-   BEGIN
-       prc_listar_pets_tutores_json(v_json);
-   END;
-   /
-
-   -- Procedimento 2: resumo de custos por clínica e tipo de evento
-   EXEC prc_resumo_custos_clinica_tipo;
-   SELECT * FROM TB_RELATORIO_CUSTOS_CLINICA ORDER BY id_linha;
-   ```
+O gatilho `TRG_AUDITORIA_EVENTO_SAUDE` não pode ficar dentro de pacote (limitação do Oracle); ele apenas delega ao `PKG_AUDITORIA_EVENTO`.
+Todas as rotinas tratam no mínimo 3 exceções (`ORA-20101…20151`) e gravam em `TB_LOG_ERROS`.
 
 ---
 
-## 📐 Modelo de Dados
+## ▶️ Como executar
 
-Os arquivos `ModeloLogico.dmd` e `ModeloRelacional.dmd` (Oracle SQL Developer Data Modeler) devem ser abertos junto com a pasta de suporte do projeto (`ModeloRelacional.zip`, descompactada no mesmo diretório dos `.dmd`) — os três arquivos compõem um único projeto de modelagem.
+### 1. Oracle
+1. No **SQL Developer**, execute `2TDSPG_2026_CodigoSql_Integrantes.sql` inteiro (autocontido e idempotente).
+2. Para testar, use o bloco `10. TESTES` no final do script (cada bloco está comentado).
+
+```sql
+SET SERVEROUTPUT ON;
+EXEC pkg_relatorio_custos.prc_resumo_custos_clinica_tipo;
+SELECT * FROM TB_RELATORIO_CUSTOS_CLINICA ORDER BY id_linha;
+```
+
+### 2. Exportar JSON do Oracle
+Na raiz do repositório, com **SQLcl** (ou SQL*Plus):
+```bash
+sql usuario/senha@host:1521/servico @exportacao/exportar_json.sql
+```
+Gera/atualiza `dados/tutores.json`.
+
+### 3. MongoDB local
+Pré-requisitos: MongoDB em `localhost:27017`, `mongosh` e `mongoimport` (MongoDB Database Tools) no PATH.
+```powershell
+mongosh "mongodb://localhost:27017" mongo/01_criar_colecao.js
+.\mongo\02_importar.ps1
+mongosh "mongodb://localhost:27017" mongo/03_consultas.js
+```
+
+**Modelo de documentos:** um documento por **tutor** com o **array de pets** embutido (o app sempre lê o tutor com seus pets). Eventos de saúde não são embutidos, pois crescem sem limite. CPF e senha **não** são exportados.
+
+```json
+{ "_id": 1, "nome": "Maria Silva", "email": "maria@email.com",
+  "pets": [ { "id_pet": 1, "nome": "Buddy", "raca": "Golden Retriever", "especie": "Cachorro" } ] }
+```
+
+### 4. API Java
+Copie a pasta `java/src/main/java/br/com/fiap/vetsync/database` para o projeto Spring Boot (ajuste o `package` se necessário). Requer `spring-boot-starter-jdbc` (ou JPA) e o driver `ojdbc`, apontando para **o mesmo schema Oracle**.
+
+| Endpoint | Pacote chamado |
+|---|---|
+| `GET /api/db/pets/json?tutorId=1` | `PKG_JSON_PET.PRC_LISTAR_PETS_TUTORES_JSON` |
+| `GET /api/db/pets/idade?dataNascimento=2022-09-02` | `PKG_PET.FNC_CALCULAR_IDADE` |
+| `GET /api/db/relatorios/custos?clinicaId=1` | `PKG_RELATORIO_CUSTOS.PRC_RESUMO_CUSTOS_CLINICA_TIPO` |
+| `GET /api/db/exportacao/tutores` | `PKG_EXPORTACAO_JSON.PRC_EXPORTAR_TUTORES_JSON` |
+
+Erros `ORA-20xxx` viram HTTP 404 (sem dados) ou 422 (dado inválido).
+
+---
+
+## 📐 Modelo de dados
+
+Abra `ModeloLogico.dmd` e `ModeloRelacional.dmd` no SQL Developer Data Modeler junto com a pasta descompactada de `ModeloRelacional.zip`.
 
 ---
 
@@ -95,7 +130,5 @@ Os arquivos `ModeloLogico.dmd` e `ModeloRelacional.dmd` (Oracle SQL Developer Da
 | Arthur Brito da Silva | RM562085 |
 | Luiz Felipe Flosi dos Santos | RM563197 |
 | Pedro Henrique Brum Lopes | RM561780 |
-
----
 
 > Projeto desenvolvido para fins acadêmicos — FIAP Challenge 2026
