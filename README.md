@@ -16,6 +16,12 @@ Oracle (relacional) ──► pacotes PL/SQL ──► API Java (Spring) ──�
 
 ---
 
+## 🎥 Vídeo de Demonstração
+
+Link: https://youtu.be/6hRA_evmk-c
+
+---
+
 ## 🗂️ Estrutura do projeto
 
 ```
