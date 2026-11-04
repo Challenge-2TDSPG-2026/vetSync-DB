@@ -31,7 +31,7 @@ BEGIN
     FOR t IN (
         SELECT table_name FROM user_tables
         WHERE table_name IN (
-            'TB_AUDITORIA', 'TB_RELATORIO_CUSTOS_CLINICA', 'TB_EVENTO_SAUDE',
+            'TB_AUDITORIA_EVENTO', 'TB_RELATORIO_CUSTOS_CLINICA', 'TB_EVENTO_SAUDE',
             'TB_TIPO_EVENTO', 'TB_VETERINARIO', 'TB_CLINICA', 'TB_PET',
             'TB_RACA', 'TB_ESPECIE', 'TB_TUTOR', 'TB_LOG_ERROS'
         )
@@ -162,7 +162,7 @@ CREATE TABLE TB_RELATORIO_CUSTOS_CLINICA (
     ds_tipo_linha  VARCHAR2(20) -- 'DETALHE', 'SUBTOTAL' ou 'TOTAL'
 );
 
-CREATE TABLE TB_AUDITORIA (
+CREATE TABLE TB_AUDITORIA_EVENTO (
     id_auditoria       NUMBER        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nm_usuario         VARCHAR2(100) DEFAULT USER NOT NULL,
     ds_operacao        VARCHAR2(10)  NOT NULL,
@@ -170,7 +170,7 @@ CREATE TABLE TB_AUDITORIA (
     id_evento_afetado  NUMBER,
     ds_valores_antigos VARCHAR2(1000),
     ds_valores_novos   VARCHAR2(1000),
-    CONSTRAINT ck_auditoria_operacao CHECK (ds_operacao IN ('INSERT', 'UPDATE', 'DELETE'))
+    CONSTRAINT ck_auditoria_evento_operacao CHECK (ds_operacao IN ('INSERT', 'UPDATE', 'DELETE'))
 );
 
 -- 2. INSERT INTO (dados de exemplo - minimo 5 registros por tabela usada
@@ -745,7 +745,7 @@ CREATE OR REPLACE PACKAGE pkg_auditoria_evento AS
         p_ds_status      IN VARCHAR2
     ) RETURN VARCHAR2;
 
-    -- Grava uma linha em TB_AUDITORIA (mesma transacao do DML auditado).
+    -- Grava uma linha em TB_AUDITORIA_EVENTO (mesma transacao do DML auditado).
     PROCEDURE prc_registrar (
         p_ds_operacao       IN VARCHAR2,
         p_id_evento_afetado IN NUMBER,
@@ -793,7 +793,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auditoria_evento AS
             RAISE_APPLICATION_ERROR(-20141, 'Evento afetado nulo, auditoria nao registrada.');
         END IF;
 
-        INSERT INTO TB_AUDITORIA (ds_operacao, id_evento_afetado, ds_valores_antigos, ds_valores_novos)
+        INSERT INTO TB_AUDITORIA_EVENTO (ds_operacao, id_evento_afetado, ds_valores_antigos, ds_valores_novos)
         VALUES (p_ds_operacao, p_id_evento_afetado, p_valores_antigos, p_valores_novos);
 
     EXCEPTION
@@ -1084,7 +1084,7 @@ BEGIN
 END;
 /
 
-SELECT * FROM TB_AUDITORIA ORDER BY id_auditoria DESC;
+SELECT * FROM TB_AUDITORIA_EVENTO ORDER BY id_auditoria DESC;
 */
 
 -- 10.8 PKG_EXPORTACAO_JSON - dataset para o MongoDB
