@@ -9,4 +9,4 @@ os caminhos abaixo ja estao na estrutura do repositorio.
   src/test/java/br/com/fiap/VetSync/...  (testes de repository, service e controller)
   documentos/integracao-banco-sprint4.md
 
-Link do repositorio oficial: <colar aqui o link do GitHub do vetSync-Java>
+Link do repositorio oficial: https://github.com/Challenge-2TDSPG-2026/vetSync-Java

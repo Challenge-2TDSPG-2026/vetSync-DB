@@ -35,10 +35,9 @@ vetSync-DB/
 │   ├── 01_criar_colecao.js               # Coleção, validador de schema e índices
 │   ├── 02_importar.ps1                   # mongoimport do tutores.json
 │   └── 03_consultas.js                   # Consultas de demonstração
-├── java/                                 # Classes a copiar para a API Java (chamam os pacotes)
+├── java_integracao/                      # Classes, migration e testes da integração Java
 ├── docs/ROTEIRO_VIDEO.md                 # Roteiro da demonstração em vídeo
 ├── 2TDSPG_2026_Proj_BD.pdf               # Documentação (evidências)
-├── ModeloLogico.dmd / ModeloRelacional.dmd / ModeloRelacional.zip   # Data Modeler
 └── README.md
 ```
 
@@ -54,7 +53,7 @@ vetSync-DB/
 | `TB_CLINICA` / `TB_VETERINARIO` | Clínicas e veterinários |
 | `TB_TIPO_EVENTO` / `TB_EVENTO_SAUDE` | Tipos de evento e eventos de saúde |
 | `TB_LOG_ERROS` | Log de erros das rotinas |
-| `TB_AUDITORIA` | Auditoria de INSERT/UPDATE/DELETE em `TB_EVENTO_SAUDE` |
+| `TB_AUDITORIA_EVENTO` | Auditoria de INSERT/UPDATE/DELETE em `TB_EVENTO_SAUDE` |
 | `TB_RELATORIO_CUSTOS_CLINICA` | Resultado do relatório de subtotais |
 
 ---
@@ -110,22 +109,16 @@ mongosh "mongodb://localhost:27017" mongo/03_consultas.js
 ```
 
 ### 4. API Java
-Copie a pasta `java/src/main/java/br/com/fiap/vetsync/database` para o projeto Spring Boot (ajuste o `package` se necessário). Requer `spring-boot-starter-jdbc` (ou JPA) e o driver `ojdbc`, apontando para **o mesmo schema Oracle**.
+Os arquivos de integração estão em `java_integracao/` e devem ser incorporados ao projeto Spring Boot oficial. Copie os arquivos Java para os pacotes correspondentes, a migration `V57__pacotes_plsql_banco_sprint4.sql` para `src/main/resources/db/migration` e os testes para `src/test`. Requer `spring-boot-starter-jdbc` (ou JPA) e o driver `ojdbc`, apontando para **o mesmo schema Oracle**.
 
 | Endpoint | Pacote chamado |
 |---|---|
-| `GET /api/db/pets/json?tutorId=1` | `PKG_JSON_PET.PRC_LISTAR_PETS_TUTORES_JSON` |
-| `GET /api/db/pets/idade?dataNascimento=2022-09-02` | `PKG_PET.FNC_CALCULAR_IDADE` |
-| `GET /api/db/relatorios/custos?clinicaId=1` | `PKG_RELATORIO_CUSTOS.PRC_RESUMO_CUSTOS_CLINICA_TIPO` |
-| `GET /api/db/exportacao/tutores` | `PKG_EXPORTACAO_JSON.PRC_EXPORTAR_TUTORES_JSON` |
+| `GET /banco/pets/json?tutorId=1` | `PKG_JSON_PET.PRC_LISTAR_PETS_TUTORES_JSON` |
+| `GET /banco/pets/idade?dataNascimento=2022-09-02` | `PKG_PET.FNC_CALCULAR_IDADE` |
+| `GET /banco/relatorios/custos?clinicaId=1` | `PKG_RELATORIO_CUSTOS.PRC_RESUMO_CUSTOS_CLINICA_TIPO` |
+| `GET /banco/exportacao/tutores` | `PKG_EXPORTACAO_JSON.PRC_EXPORTAR_TUTORES_JSON` |
 
 Erros `ORA-20xxx` viram HTTP 404 (sem dados) ou 422 (dado inválido).
-
----
-
-## 📐 Modelo de dados
-
-Abra `ModeloLogico.dmd` e `ModeloRelacional.dmd` no SQL Developer Data Modeler junto com a pasta descompactada de `ModeloRelacional.zip`.
 
 ---
 
