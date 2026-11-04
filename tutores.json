@@ -1,0 +1,7 @@
+[
+{"_id":1,"nome":"Maria Silva","email":"maria@email.com","telefone":"11999990001","data_cadastro":{"$date":"2026-11-03T00:22:37Z"},"pets":[{"id_pet":1,"nome":"Buddy","data_nascimento":{"$date":"2026-06-02T00:00:00Z"},"sexo":"M","peso_kg":5.00,"raca":"Golden Retriever","especie":"Cachorro"},{"id_pet":2,"nome":"Luna","data_nascimento":{"$date":"2022-09-02T00:00:00Z"},"sexo":"F","peso_kg":3.50,"raca":"Siames","especie":"Gato"}]},
+{"_id":2,"nome":"Joao Souza","email":"joao@email.com","telefone":"11999990002","data_cadastro":{"$date":"2026-11-03T00:22:37Z"},"pets":[{"id_pet":3,"nome":"Rex","data_nascimento":{"$date":"2024-09-02T00:00:00Z"},"sexo":"M","peso_kg":28.00,"raca":"Pastor Alemao","especie":"Cachorro"}]},
+{"_id":3,"nome":"Ana Paula Ferreira","email":"ana.ferreira@email.com","telefone":"11988887777","data_cadastro":{"$date":"2026-11-03T00:22:37Z"},"pets":[{"id_pet":4,"nome":"Mel","data_nascimento":{"$date":"2021-03-10T00:00:00Z"},"sexo":"F","peso_kg":4.20,"raca":"Poodle","especie":"Cachorro"}]},
+{"_id":4,"nome":"Carlos Mendes","email":"carlos.mendes@email.com","telefone":"11977776666","data_cadastro":{"$date":"2026-11-03T00:22:37Z"},"pets":[{"id_pet":5,"nome":"Simba","data_nascimento":{"$date":"2022-08-22T00:00:00Z"},"sexo":"M","peso_kg":3.80,"raca":"Persa","especie":"Gato"}]},
+{"_id":5,"nome":"Beatriz Torres","email":"beatriz.torres@email.com","telefone":"11966665555","data_cadastro":{"$date":"2026-11-03T00:22:37Z"},"pets":[]}
+]
